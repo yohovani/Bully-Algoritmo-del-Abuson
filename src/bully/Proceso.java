@@ -169,7 +169,12 @@ public class Proceso extends Thread{
 		for(int i=0;i<this.Mensajes.size();i++){
 			this.Mensajes.set(i, 0);
 		}
-		enviar("1");
+		if(this.Id == this.Ids.get(Ids.size()-1)){
+			abusivo();
+		}else{
+			enviar("1");
+		}
+
 	}
 	
 	public void abusivo(){

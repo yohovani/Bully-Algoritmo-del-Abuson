@@ -6,6 +6,7 @@
 package bully;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -42,6 +43,10 @@ public class BullyGUI extends javax.swing.JFrame {
         JBTNNP = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(528, 356));
+        setMinimumSize(new java.awt.Dimension(528, 356));
+        setResizable(false);
+        setSize(new java.awt.Dimension(528, 356));
 
         JTAMensajes.setColumns(20);
         JTAMensajes.setRows(5);
@@ -154,10 +159,13 @@ public class BullyGUI extends javax.swing.JFrame {
 			}
 			for(int i=0;i<aux;i++){
 				this.procesos.get(i).start();
-			}	
+			}
+			this.JBtnAceptar.setEnabled(false);
+			this.jTFNP.setEnabled(false);
+		}else{
+			JOptionPane.showMessageDialog(null,"Caracter no valido"); 
 		}
-		this.JBtnAceptar.setEnabled(false);
-		this.jTFNP.setEnabled(false);
+		
     }//GEN-LAST:event_JBtnAceptarActionPerformed
 
     private void jTFNPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFNPActionPerformed
@@ -169,9 +177,18 @@ public class BullyGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
 		if(this.JTFPI.getText().matches("[0-9]+")){
 			int aux = Integer.parseInt(JTFPI.getText());
-			this.procesos.get(aux).coordinador();
+			if(aux < procesos.size()){
+				this.procesos.get(aux).coordinador();
+				this.jBTNIniciar.setEnabled(false);
+				this.JTFPI.setEnabled(false);
+			}else{
+				JOptionPane.showMessageDialog(null,"Indice no valido"); 
+			}
+		}else{
+			JOptionPane.showMessageDialog(null,"Caracter no valido"); 
 		}
-		addTexto();
+		
+		
     }//GEN-LAST:event_jBTNIniciarActionPerformed
 
     private void JBTNNPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBTNNPActionPerformed
