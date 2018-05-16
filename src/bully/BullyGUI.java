@@ -6,6 +6,7 @@
 package bully;
 
 import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.JOptionPane;
 
 /**
@@ -41,6 +42,7 @@ public class BullyGUI extends javax.swing.JFrame {
         JTFPI = new javax.swing.JTextField();
         JLBCoordinador = new javax.swing.JLabel();
         JBTNNP = new javax.swing.JButton();
+        JBTNFalla = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(528, 356));
@@ -48,6 +50,7 @@ public class BullyGUI extends javax.swing.JFrame {
         setResizable(false);
         setSize(new java.awt.Dimension(528, 356));
 
+        JTAMensajes.setEditable(false);
         JTAMensajes.setColumns(20);
         JTAMensajes.setRows(5);
         jScrollPane1.setViewportView(JTAMensajes);
@@ -85,6 +88,13 @@ public class BullyGUI extends javax.swing.JFrame {
             }
         });
 
+        JBTNFalla.setText("Falla Coordinador");
+        JBTNFalla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBTNFallaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -110,19 +120,23 @@ public class BullyGUI extends javax.swing.JFrame {
                                 .addGap(59, 59, 59)
                                 .addComponent(jBTNIniciar))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(33, 33, 33)
-                                .addComponent(JBTNNP))
-                            .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(JLBCoordinador)))
-                        .addContainerGap(14, Short.MAX_VALUE))))
+                                .addComponent(JLBCoordinador))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(JBTNFalla)
+                                    .addComponent(JBTNNP))))
+                        .addContainerGap(20, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(15, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -138,8 +152,10 @@ public class BullyGUI extends javax.swing.JFrame {
                         .addGap(27, 27, 27)
                         .addComponent(JBTNNP)
                         .addGap(18, 18, 18)
-                        .addComponent(JLBCoordinador)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                        .addComponent(JBTNFalla)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(JLBCoordinador)
+                        .addGap(31, 31, 31))))
         );
 
         pack();
@@ -202,6 +218,21 @@ public class BullyGUI extends javax.swing.JFrame {
 		this.procesos.get(Ids.size()-1).abusivo();
     }//GEN-LAST:event_JBTNNPActionPerformed
 
+    private void JBTNFallaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBTNFallaActionPerformed
+        // TODO add your handling code here:
+		this.procesos.get(coord[0]).matarProceso();
+		Random r = new Random();
+		int aux = r.nextInt(this.procesos.size()-1);
+		if(aux != this.coord[0]){
+			this.coord[0]=-1;
+			for(int i=0;i<this.procesos.size();i++){
+				this.procesos.get(i).setEnvio(false);
+				this.Mensajes.set(i, 0);
+			}
+			this.procesos.get(aux).coordinador();
+		}
+    }//GEN-LAST:event_JBTNFallaActionPerformed
+
 	public void addTexto(){
 		Runnable r = new Runnable() {
 			@Override
@@ -256,6 +287,7 @@ public class BullyGUI extends javax.swing.JFrame {
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton JBTNFalla;
     private javax.swing.JButton JBTNNP;
     private javax.swing.JButton JBtnAceptar;
     private javax.swing.JLabel JLBCoordinador;
@@ -272,5 +304,5 @@ public class BullyGUI extends javax.swing.JFrame {
 	ArrayList<Integer> Mensajes = new ArrayList();
 	ArrayList<String> m = new ArrayList();
 	ArrayList<Proceso> procesos = new ArrayList();
-	int coord[] = {-1,0};
+	int coord[] = {-1,0,0};
 }

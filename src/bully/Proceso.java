@@ -84,6 +84,8 @@ public class Proceso extends Thread{
 				w:while(true){
 					
 					try {
+						mayor();
+						//System.out.println(coord[1]+"");
 						Thread.sleep(600);
 						DatagramPacket paqueteRecibir;
 						byte buffer[] = new byte[1024];
@@ -98,7 +100,7 @@ public class Proceso extends Thread{
 						if((coord[1] <= Id) && coord[0]==-1){
 							switch(numM){
 								case 1:{
-									if(Id > coord[1]){
+									if(Id > coord[1] && estados.get(Id)){
 										synchronized(Mensajes){
 											int aux = Mensajes.get(coord[1]);
 											aux+=1;
@@ -111,15 +113,15 @@ public class Proceso extends Thread{
 									break;
 								}
 								case 2:{
-									if(Id < Ids.get(Ids.size()-1) && Id == coord[1] && envio){
-										if(Mensajes.get(coord[1]) >= ((Ids.size()-1)-Id)){
+									if(Id < coord[2] && Id == coord[1] && envio){
+										if(Mensajes.get(coord[1]) >= ((Ids.size()-1)-Id) || Mensajes.get(coord[1]) >0){
 											coord[1]++;
 											mens.add("-> -> Proceso "+Id+": Me retiro de la elección");
 											System.out.println(mens.get(mens.size()-1));
 										}
 
 									}else{
-										if(Id < Ids.get(Ids.size()-1) && coord[1] == Id){
+										if(Id < coord[2] && coord[1] == Id){
 											envio = true;
 											enviar("1");
 										}else{
@@ -129,7 +131,7 @@ public class Proceso extends Thread{
 									break;
 								}
 								case 3:{
-									if((Id == Ids.get(Ids.size()-1)) && (coord[1] == Id)){
+									if((Id == coord[2]) && (coord[1] == Id)){
 										coord[0]=Id;
 										enviar("3");
 										mens.add("Proceso "+Id+": Soy el cordinador");
@@ -177,6 +179,10 @@ public class Proceso extends Thread{
 
 	}
 	
+	public void matarProceso(){
+		this.estados.set(this.coord[0], false);
+	}
+	
 	public void abusivo(){
 		this.envio = true;
 		this.coord[0] = Id;
@@ -184,5 +190,23 @@ public class Proceso extends Thread{
 		this.mens.add("Proceso "+Id+": Soy el nuevo Coordinador");
 		System.out.println(mens.get(mens.size()-1));
 	}
+	
+	public void mayor(){
+		this.coord[2] = Ids.get(0);
+		for(int i=0;i<this.Ids.size();i++){
+			if(this.Ids.get(i) > this.coord[2] && this.estados.get(i)){
+				this.coord[2] = this.Ids.get(i);
+			}
+		}
+	}
+
+	public boolean isEnvio() {
+		return envio;
+	}
+
+	public void setEnvio(boolean envio) {
+		this.envio = envio;
+	}
+	
 	
 }
